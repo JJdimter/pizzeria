@@ -1,0 +1,53 @@
+import { useState } from "react";
+
+const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!email || !password) {
+      setMessage("Todos los campos son obligatorios");
+      return;
+    }
+
+    if (password.length < 6) {
+      setMessage("La contraseña debe tener al menos 6 caracteres");
+      return;
+    }
+
+    setMessage("¡Login exitoso!");
+  };
+
+  return (
+    <div style={{ color: '#111827' }}>
+      <h2 style={{ color: '#111827' }}>Iniciar sesión</h2>
+
+      <form onSubmit={handleSubmit}>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          style={{ color: '#111827' }}
+        />
+
+        <input
+          type="password"
+          placeholder="Contraseña"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          style={{ color: '#111827' }}
+        />
+
+        <button type="submit" style={{ color: '#111827' }}>Iniciar sesión</button>
+      </form>
+
+      {message && <p style={{ color: '#111827' }}>{message}</p>}
+    </div>
+  );
+};
+
+export default Login;

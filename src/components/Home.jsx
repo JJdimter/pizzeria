@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
+import { API_BASE_URL } from "../api";
 import Header from "./Header";
-import CardPizza from "./CardPizza";
+import CardPizza from "./Cardpizza";
 
 const Home = () => {
   // Estado donde guardamos las pizzas que devuelve la API
@@ -11,7 +12,7 @@ const Home = () => {
   useEffect(() => {
     const getPizzas = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/pizzas");
+        const res = await fetch(`${API_BASE_URL}/api/pizzas`);
         if (!res.ok) {
           throw new Error("No se pudieron cargar las pizzas");
         }
@@ -38,10 +39,7 @@ const Home = () => {
           {pizzas.map((pizza) => (
             <div className="col-12 col-md-6 col-lg-4" key={pizza.id}>
               <CardPizza
-                name={pizza.name}
-                price={pizza.price}
-                ingredients={pizza.ingredients}
-                img={pizza.img}
+                pizza={pizza}
               />
             </div>
           ))}

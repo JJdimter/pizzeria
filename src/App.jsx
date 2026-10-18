@@ -1,25 +1,23 @@
-import Cart from "./components/Cart";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
-// import Home from "./components/Home";
-// import Register from "./components/Register";
-// import Login from "./components/Login";
+import Home from "./components/Home";
+// import Pizza from "./components/Pizza";
+// import Cart from "./components/Cart";
+// import LoginPage from "./components/Login";
+// import RegisterPage from "./components/Register";
 
-function App() {
+const App = () => {
   return (
-    <div className="d-flex flex-column min-vh-100">
+    <div>
       <Navbar />
-
-      {/* <Home /> */}
-
-      {/* <Register /> */}
-      {/* <Login /> */}
-
-      <Cart />
-
+      <Home />
+      {/* <Pizza /> */}
+      {/* <RegisterPage /> */}
+      {/* <LoginPage /> */}
+      {/* <Cart /> */}
       <Footer />
     </div>
   );
-}
+};
 
 export default App;

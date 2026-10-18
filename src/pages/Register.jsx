@@ -6,8 +6,8 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (event) => {
+    event.preventDefault();
 
     if (!email || !password || !confirmPassword) {
       setMessage("Todos los campos son obligatorios");
@@ -28,39 +28,34 @@ const Register = () => {
   };
 
   return (
-    <div style={{ color: '#111827' }}>
-      <h2 style={{ color: '#111827' }}>Registro</h2>
-
-      <form onSubmit={handleSubmit}>
+    <main className="container my-5">
+      <h1>Registro</h1>
+      <form className="mx-auto d-grid gap-3" style={{ maxWidth: "420px" }} onSubmit={handleSubmit}>
         <input
+          className="form-control"
           type="email"
           placeholder="Email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          style={{ color: '#111827' }}
+          onChange={(event) => setEmail(event.target.value)}
         />
-
         <input
+          className="form-control"
           type="password"
           placeholder="Contraseña"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          style={{ color: '#111827' }}
+          onChange={(event) => setPassword(event.target.value)}
         />
-
         <input
+          className="form-control"
           type="password"
           placeholder="Confirmar contraseña"
           value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          style={{ color: '#111827' }}
+          onChange={(event) => setConfirmPassword(event.target.value)}
         />
-
-        <button type="submit" style={{ color: '#111827' }}>Registrarse</button>
+        <button className="btn btn-dark" type="submit">Registrarse</button>
       </form>
-
-      {message && <p style={{ color: '#111827' }}>{message}</p>}
-    </div>
+      {message && <p className="text-center mt-3">{message}</p>}
+    </main>
   );
 };
 

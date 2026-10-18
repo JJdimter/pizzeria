@@ -1,27 +1,23 @@
+import { Link } from "react-router-dom";
+import { useCart } from "../hooks/useCart";
+
 const Navbar = () => {
-  const total = 25000;
-  const token = false;
+  const { total } = useCart();
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-4">
-      <span className="navbar-brand">Pizzería Mamma Mia!</span>
+      <Link className="navbar-brand text-decoration-none" to="/">
+        Pizzería Mamma Mia!
+      </Link>
       <div className="d-flex gap-2 me-auto">
-        <button className="btn btn-outline-light btn-sm">🍕 Home</button>
-        {token ? (
-          <>
-            <button className="btn btn-outline-light btn-sm">🔓 Profile</button>
-            <button className="btn btn-outline-light btn-sm">🔒 Logout</button>
-          </>
-        ) : (
-          <>
-            <button className="btn btn-outline-light btn-sm">🔐 Login</button>
-            <button className="btn btn-outline-light btn-sm">🔐 Register</button>
-          </>
-        )}
+        <Link className="btn btn-outline-light btn-sm" to="/">🍕 Home</Link>
+        <Link className="btn btn-outline-light btn-sm" to="/profile">👤 Profile</Link>
+        <Link className="btn btn-outline-light btn-sm" to="/login">🔐 Login</Link>
+        <Link className="btn btn-outline-light btn-sm" to="/register">📝 Register</Link>
       </div>
-      <button className="btn btn-outline-info btn-sm">
+      <Link className="btn btn-outline-info btn-sm" to="/cart">
         🛒 Total: ${total.toLocaleString("es-CL")}
-      </button>
+      </Link>
     </nav>
   );
 };

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { API_BASE_URL } from "../api";
-import Header from "./Header";
-import CardPizza from "./Cardpizza";
+import CardPizza from "../components/Cardpizza";
+import Header from "../components/Header";
+import { useCart } from "../hooks/useCart";
 
 const Home = () => {
-  // Estado donde guardamos las pizzas que devuelve la API
+  const { addToCart } = useCart();
   const [pizzas, setPizzas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -16,8 +17,7 @@ const Home = () => {
         if (!res.ok) {
           throw new Error("No se pudieron cargar las pizzas");
         }
-        const data = await res.json();
-        setPizzas(data);
+        setPizzas(await res.json());
       } catch (err) {
         setError(err.message);
       } finally {
@@ -26,7 +26,7 @@ const Home = () => {
     };
 
     getPizzas();
-  }, []); // [] => se ejecuta una sola vez, al montar el componente
+  }, []);
 
   return (
     <>
@@ -34,13 +34,10 @@ const Home = () => {
       <div className="container my-4">
         {loading && <p className="text-center">Cargando pizzas...</p>}
         {error && <p className="text-center text-danger">{error}</p>}
-
         <div className="row g-4">
           {pizzas.map((pizza) => (
             <div className="col-12 col-md-6 col-lg-4" key={pizza.id}>
-              <CardPizza
-                pizza={pizza}
-              />
+              <CardPizza pizza={pizza} onAddToCart={addToCart} />
             </div>
           ))}
         </div>

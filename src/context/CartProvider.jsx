@@ -1,11 +1,8 @@
 import { useState } from "react";
-import { pizzaCart } from "../pizzas";
 import { CartContext } from "./CartContext";
 
 export const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState(() =>
-    pizzaCart.map((pizza) => ({ ...pizza, id: pizza.id.toLowerCase() }))
-  );
+  const [cart, setCart] = useState([]);
 
   const addToCart = (pizza) => {
     const id = pizza.id.toLowerCase();

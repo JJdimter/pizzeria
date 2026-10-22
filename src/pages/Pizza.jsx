@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { API_BASE_URL } from "../api";
 import { useCart } from "../hooks/useCart";
 import { getSamplePizzaImage } from "../pizzaImages";
+import { pizzas as localPizzas } from "../pizzas";
 
 const Pizza = () => {
   const { addToCart } = useCart();
   const [pizza, setPizza] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     const getPizza = async () => {
@@ -17,8 +17,8 @@ const Pizza = () => {
           throw new Error("No se pudo cargar la pizza");
         }
         setPizza(await res.json());
-      } catch (err) {
-        setError(err.message);
+      } catch {
+        setPizza(localPizzas.find((item) => item.id.toLowerCase() === "p001"));
       } finally {
         setLoading(false);
       }
@@ -28,7 +28,6 @@ const Pizza = () => {
   }, []);
 
   if (loading) return <p className="text-center my-5">Cargando pizza...</p>;
-  if (error) return <p className="text-center my-5 text-danger">{error}</p>;
   if (!pizza) return null;
 
   const handleImageError = (event) => {

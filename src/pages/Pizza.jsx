@@ -11,6 +11,12 @@ const Pizza = () => {
 
   useEffect(() => {
     const getPizza = async () => {
+      if (!API_BASE_URL) {
+        setPizza(localPizzas.find((item) => item.id.toLowerCase() === "p001"));
+        setLoading(false);
+        return;
+      }
+
       try {
         const res = await fetch(`${API_BASE_URL}/api/pizzas/p001`);
         if (!res.ok) {

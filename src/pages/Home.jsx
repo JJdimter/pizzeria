@@ -12,6 +12,12 @@ const Home = () => {
 
   useEffect(() => {
     const getPizzas = async () => {
+      if (!API_BASE_URL) {
+        setPizzas(localPizzas);
+        setLoading(false);
+        return;
+      }
+
       try {
         const res = await fetch(`${API_BASE_URL}/api/pizzas`);
         if (!res.ok) {

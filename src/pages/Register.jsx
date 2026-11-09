@@ -1,12 +1,17 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "../hooks/useUser";
 
 const Register = () => {
+  const { register } = useUser();
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!email || !password || !confirmPassword) {
@@ -24,7 +29,16 @@ const Register = () => {
       return;
     }
 
-    setMessage("¡Registro exitoso!");
+    setMessage("");
+    setIsSubmitting(true);
+    try {
+      await register({ email, password });
+      navigate("/");
+    } catch (error) {
+      setMessage(error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -35,6 +49,7 @@ const Register = () => {
           className="form-control"
           type="email"
           placeholder="Email"
+          required
           value={email}
           onChange={(event) => setEmail(event.target.value)}
         />
@@ -42,6 +57,8 @@ const Register = () => {
           className="form-control"
           type="password"
           placeholder="Contraseña"
+          minLength={6}
+          required
           value={password}
           onChange={(event) => setPassword(event.target.value)}
         />
@@ -49,12 +66,16 @@ const Register = () => {
           className="form-control"
           type="password"
           placeholder="Confirmar contraseña"
+          minLength={6}
+          required
           value={confirmPassword}
           onChange={(event) => setConfirmPassword(event.target.value)}
         />
-        <button className="btn btn-dark" type="submit">Registrarse</button>
+        <button className="btn btn-dark" type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Registrando..." : "Registrarse"}
+        </button>
       </form>
-      {message && <p className="text-center mt-3">{message}</p>}
+      {message && <p className="text-center mt-3" role="alert">{message}</p>}
     </main>
   );
 };

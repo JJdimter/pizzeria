@@ -1,9 +1,39 @@
+import { useState } from "react";
+import { apiRequest } from "../api";
 import { useCart } from "../hooks/useCart";
 import { useUser } from "../hooks/useUser";
 
 const Cart = () => {
   const { cart, total, increase, decrease } = useCart();
-  const { token } = useUser();
+  const { token, isDemo } = useUser();
+  const [checkoutMessage, setCheckoutMessage] = useState("");
+  const [checkoutError, setCheckoutError] = useState(false);
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
+
+  const handleCheckout = async () => {
+    setCheckoutMessage("");
+    setCheckoutError(false);
+    setIsCheckingOut(true);
+
+    try {
+      if (!isDemo) {
+        await apiRequest("/api/checkouts", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ cart }),
+        });
+      }
+      setCheckoutMessage("¡Compra realizada con éxito!");
+    } catch (error) {
+      setCheckoutMessage(error.message);
+      setCheckoutError(true);
+    } finally {
+      setIsCheckingOut(false);
+    }
+  };
 
   return (
     <main className="cart-page">
@@ -50,8 +80,23 @@ const Cart = () => {
               <span>Total</span>
               <strong>${total.toLocaleString("es-CL")}</strong>
             </div>
-            <button className="cart-checkout" type="button" disabled={!token}>Ir a pagar</button>
+            <button
+              className="cart-checkout"
+              type="button"
+              disabled={!token || isCheckingOut}
+              onClick={handleCheckout}
+            >
+              {isCheckingOut ? "Procesando..." : "Ir a pagar"}
+            </button>
           </section>
+          {checkoutMessage && (
+            <p
+              className="cart-checkout-message"
+              role={checkoutError ? "alert" : "status"}
+            >
+              {checkoutMessage}
+            </p>
+          )}
         </>
       )}
     </main>

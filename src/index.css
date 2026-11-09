@@ -603,6 +603,16 @@ code {
   background: #066649;
 }
 
+.cart-checkout:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.cart-checkout-message {
+  margin-top: 16px;
+  color: var(--text-h);
+}
+
 .cart-empty {
   padding: 24px 0;
   color: var(--text);

@@ -18,6 +18,10 @@ npm install
 npm run dev
 ```
 
+Para conectar con el backend, configura `VITE_API_URL` en `.env.local` (por
+ejemplo, `http://localhost:5000`). Si no se configura, en desarrollo se usa
+`http://localhost:5000` por defecto.
+
 ## Validación
 
 ```bash

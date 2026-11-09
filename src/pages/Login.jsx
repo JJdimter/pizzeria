@@ -1,11 +1,16 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "../hooks/useUser";
 
 const Login = () => {
+  const { login } = useUser();
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!email || !password) {
@@ -13,12 +18,16 @@ const Login = () => {
       return;
     }
 
-    if (password.length < 6) {
-      setMessage("La contraseña debe tener al menos 6 caracteres");
-      return;
+    setMessage("");
+    setIsSubmitting(true);
+    try {
+      await login({ email, password });
+      navigate("/");
+    } catch (error) {
+      setMessage(error.message);
+    } finally {
+      setIsSubmitting(false);
     }
-
-    setMessage("¡Login exitoso!");
   };
 
   return (
@@ -29,6 +38,7 @@ const Login = () => {
           className="form-control"
           type="email"
           placeholder="Email"
+          required
           value={email}
           onChange={(event) => setEmail(event.target.value)}
         />
@@ -36,12 +46,18 @@ const Login = () => {
           className="form-control"
           type="password"
           placeholder="Contraseña"
+          required
           value={password}
           onChange={(event) => setPassword(event.target.value)}
         />
-        <button className="btn btn-dark" type="submit">Iniciar sesión</button>
+        <button className="btn btn-dark" type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Ingresando..." : "Iniciar sesión"}
+        </button>
       </form>
-      {message && <p className="text-center mt-3">{message}</p>}
+      <p className="text-center mt-3">
+        Acceso de prueba: <strong>test@example.com</strong> / <strong>123123</strong>
+      </p>
+      {message && <p className="text-center mt-3" role="alert">{message}</p>}
     </main>
   );
 };

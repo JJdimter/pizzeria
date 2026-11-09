@@ -1,7 +1,9 @@
 import { useCart } from "../hooks/useCart";
+import { useUser } from "../hooks/useUser";
 
 const Cart = () => {
   const { cart, total, increase, decrease } = useCart();
+  const { token } = useUser();
 
   return (
     <main className="cart-page">
@@ -48,7 +50,7 @@ const Cart = () => {
               <span>Total</span>
               <strong>${total.toLocaleString("es-CL")}</strong>
             </div>
-            <button className="cart-checkout" type="button">Ir a pagar</button>
+            <button className="cart-checkout" type="button" disabled={!token}>Ir a pagar</button>
           </section>
         </>
       )}

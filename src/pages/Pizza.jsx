@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { API_BASE_URL } from "../api";
 import { useCart } from "../hooks/useCart";
 import { getSamplePizzaImage } from "../pizzaImages";
 import { pizzas as localPizzas } from "../pizzas";
 
 const Pizza = () => {
+  const { id } = useParams();
   const { addToCart } = useCart();
   const [pizza, setPizza] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -12,29 +14,35 @@ const Pizza = () => {
   useEffect(() => {
     const getPizza = async () => {
       if (!API_BASE_URL) {
-        setPizza(localPizzas.find((item) => item.id.toLowerCase() === "p001"));
+        setPizza(localPizzas.find((item) => item.id.toLowerCase() === id.toLowerCase()) ?? null);
         setLoading(false);
         return;
       }
 
       try {
-        const res = await fetch(`${API_BASE_URL}/api/pizzas/p001`);
+        const res = await fetch(`${API_BASE_URL}/api/pizzas/${encodeURIComponent(id)}`);
         if (!res.ok) {
           throw new Error("No se pudo cargar la pizza");
         }
         setPizza(await res.json());
       } catch {
-        setPizza(localPizzas.find((item) => item.id.toLowerCase() === "p001"));
+        setPizza(localPizzas.find((item) => item.id.toLowerCase() === id.toLowerCase()) ?? null);
       } finally {
         setLoading(false);
       }
     };
 
     getPizza();
-  }, []);
+  }, [id]);
 
   if (loading) return <p className="text-center my-5">Cargando pizza...</p>;
-  if (!pizza) return null;
+  if (!pizza) {
+    return (
+      <main className="container my-5 text-center">
+        <h1>Pizza no encontrada</h1>
+      </main>
+    );
+  }
 
   const handleImageError = (event) => {
     event.currentTarget.onerror = null;

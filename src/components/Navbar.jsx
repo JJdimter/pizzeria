@@ -1,8 +1,10 @@
 import { Link, NavLink } from "react-router-dom";
 import { useCart } from "../hooks/useCart";
+import { useUser } from "../hooks/useUser";
 
 const Navbar = () => {
   const { total } = useCart();
+  const { token, logout } = useUser();
 
   return (
     <nav className="site-nav" aria-label="Navegación principal">
@@ -16,9 +18,17 @@ const Navbar = () => {
         </Link>
         <div className="site-nav__links">
           <NavLink className={({ isActive }) => `site-nav__link${isActive ? " is-active" : ""}`} to="/" end>Inicio</NavLink>
-          <NavLink className={({ isActive }) => `site-nav__link${isActive ? " is-active" : ""}`} to="/profile">Perfil</NavLink>
-          <NavLink className={({ isActive }) => `site-nav__link${isActive ? " is-active" : ""}`} to="/login">Ingresar</NavLink>
-          <NavLink className={({ isActive }) => `site-nav__link${isActive ? " is-active" : ""}`} to="/register">Crear cuenta</NavLink>
+          {token ? (
+            <>
+              <NavLink className={({ isActive }) => `site-nav__link${isActive ? " is-active" : ""}`} to="/profile">Perfil</NavLink>
+              <button className="site-nav__link site-nav__logout" type="button" onClick={logout}>Cerrar sesión</button>
+            </>
+          ) : (
+            <>
+              <NavLink className={({ isActive }) => `site-nav__link${isActive ? " is-active" : ""}`} to="/login">Ingresar</NavLink>
+              <NavLink className={({ isActive }) => `site-nav__link${isActive ? " is-active" : ""}`} to="/register">Crear cuenta</NavLink>
+            </>
+          )}
         </div>
         <Link className="site-nav__cart" to="/cart">
           <span><span aria-hidden="true">🛒</span> Carrito</span>

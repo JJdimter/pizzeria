@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { getSamplePizzaImage } from "../pizzaImages";
 
 const CardPizza = ({ pizza, onAddToCart }) => {
@@ -19,7 +20,9 @@ const CardPizza = ({ pizza, onAddToCart }) => {
       />
 
       <div className="pizza-card__body">
-        <h2 className="pizza-card__title">{pizza.name}</h2>
+        <h2 className="pizza-card__title">
+          <Link to={`/pizza/${pizza.id}`}>{pizza.name}</Link>
+        </h2>
 
         <p
           className={`pizza-card__description${descriptionExpanded ? " is-expanded" : ""}`}

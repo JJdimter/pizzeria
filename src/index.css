@@ -141,6 +141,13 @@ footer p {
   transition: background-color 150ms ease, color 150ms ease;
 }
 
+.site-nav__logout {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+}
+
 .site-nav__link:hover,
 .site-nav__link.is-active {
   background: rgba(255, 255, 255, 0.14);
@@ -345,6 +352,15 @@ p {
 .pizza-card__title {
   margin: 0 0 10px;
   text-transform: capitalize;
+}
+
+.pizza-card__title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.pizza-card__title a:hover {
+  text-decoration: underline;
 }
 
 .pizza-card__description {
